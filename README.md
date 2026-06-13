@@ -16,6 +16,11 @@
 
   <br /><br />
 
+  ![RepoPrompt Screenshot](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.0/screenshot.png)
+  ![RepoPrompt Screenshot 2](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.0/screenshot2.png)
+
+  <br />
+
   <a href="#installation">📥 Download</a> ·
   <a href="#features">✨ Features</a> ·
   <a href="#workflow">💡 Workflow</a> ·
@@ -99,8 +104,8 @@ Think of it as a **curated context window builder** for your codebase.
 
 Download the latest installer from the [Releases page](https://github.com/MiaAI-Lab/reprompt-windows/releases):
 
-[![Download MSI](https://img.shields.io/badge/Download-MSI-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/reprompt-windows/releases/latest)
-[![Download Setup EXE](https://img.shields.io/badge/Download-Setup_EXE-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/reprompt-windows/releases/latest)
+[![Download MSI](https://img.shields.io/badge/Download-MSI-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.0/RepoPrompt_1.0.0_x64_en-US.msi)
+[![Download Setup EXE](https://img.shields.io/badge/Download-Setup_EXE-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.0/RepoPrompt_1.0.0_x64-setup.exe)
 
 - **MSI** — Windows Installer package. Supports silent/unattended installation via msiexec.
 - **Setup EXE** — NSIS-based installer with a graphical setup wizard.
