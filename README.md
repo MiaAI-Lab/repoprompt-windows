@@ -30,7 +30,7 @@
 
 ---
 
-## What is RepoPrompt?
+## What is RepoPrompt for Windows?
 
 RepoPrompt is a **context engineering tool** for AI coding agents. It solves a simple but critical problem:
 
@@ -239,5 +239,6 @@ Apache 2.0 — see [LICENSE](LICENSE).
   <a href="https://github.com/MiaAI-Lab"><img src="https://img.shields.io/badge/Mia's_AI_Lab-555?style=flat-square&logo=github&logoColor=white" alt="Mia's AI Lab" /></a>
   <a href="https://x.com/MiaAI_lab"><img src="https://img.shields.io/badge/@MiaAI_lab-000?style=flat-square&logo=x&logoColor=white" alt="X / Twitter" /></a>
 </div>
+
 
 
