@@ -104,8 +104,8 @@ Think of it as a **curated context window builder** for your codebase.
 
 Download the latest installer from the [Releases page](https://github.com/MiaAI-Lab/reprompt-windows/releases):
 
-[![Download MSI](https://img.shields.io/badge/Download-MSI-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.1/RepoPrompt_1.0.1_x64_en-US.msi)
-[![Download Setup EXE](https://img.shields.io/badge/Download-Setup_EXE-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.1/RepoPrompt_1.0.1_x64-setup.exe)
+[![Download MSI](https://img.shields.io/badge/Download-MSI-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.2/RepoPrompt_1.0.2_x64_en-US.msi)
+[![Download Setup EXE](https://img.shields.io/badge/Download-Setup_EXE-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.2/RepoPrompt_1.0.2_x64-setup.exe)
 
 - **MSI** — Windows Installer package. Supports silent/unattended installation via msiexec.
 - **Setup EXE** — NSIS-based installer with a graphical setup wizard.
@@ -239,6 +239,7 @@ Apache 2.0 — see [LICENSE](LICENSE).
   <a href="https://github.com/MiaAI-Lab"><img src="https://img.shields.io/badge/Mia's_AI_Lab-555?style=flat-square&logo=github&logoColor=white" alt="Mia's AI Lab" /></a>
   <a href="https://x.com/MiaAI_lab"><img src="https://img.shields.io/badge/@MiaAI_lab-000?style=flat-square&logo=x&logoColor=white" alt="X / Twitter" /></a>
 </div>
+
 
 
 

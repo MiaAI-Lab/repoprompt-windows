@@ -13,35 +13,81 @@ interface Props {
 
 function buildTree(files: FileEntry[]): TreeNode[] {
   const root: TreeNode[] = [];
-  const map = new Map<string, TreeNode>();
-  const sorted = [...files].sort((a, b) => {
-    if (a.is_dir !== b.is_dir) return a.is_dir ? -1 : 1;
-    return a.relative_path.localeCompare(b.relative_path);
-  });
-  for (const file of sorted) {
+  const nodeMap = new Map<string, TreeNode>();
+
+  // Step 1: Collect all unique directory paths from file paths
+  const dirPaths = new Set<string>();
+  for (const file of files) {
+    if (file.is_dir) dirPaths.add(file.relative_path);
     const parts = file.relative_path.split("/");
-    const node: TreeNode = { ...file, children: [], checked: false, indeterminate: false, depth: parts.length - 1 };
-    map.set(file.relative_path, node);
-    if (parts.length > 1) {
+    // Add all parent directories
+    for (let i = 1; i < parts.length; i++) {
+      dirPaths.add(parts.slice(0, i).join("/"));
+    }
+  }
+
+  // Step 2: Create directory nodes (sorted shallowest first so parents exist)
+  const sortedDirPaths = [...dirPaths].sort((a, b) => {
+    return a.split("/").length - b.split("/").length;
+  });
+  for (const dirPath of sortedDirPaths) {
+    const parts = dirPath.split("/");
+    const dirNode: TreeNode = {
+      path: "",
+      relative_path: dirPath,
+      name: parts[parts.length - 1],
+      size: 0,
+      is_dir: true,
+      extension: "",
+      children: [],
+      checked: false,
+      indeterminate: false,
+      depth: parts.length - 1,
+    };
+    nodeMap.set(dirPath, dirNode);
+  }
+
+  // Step 3: Create file nodes
+  for (const file of files) {
+    if (file.is_dir) continue;
+    const node: TreeNode = {
+      ...file,
+      children: [],
+      checked: false,
+      indeterminate: false,
+      depth: file.relative_path.split("/").length - 1,
+    };
+    nodeMap.set(file.relative_path, node);
+  }
+
+  // Step 4: Attach every node to its parent
+  for (const [relPath, node] of nodeMap) {
+    const parts = relPath.split("/");
+    if (parts.length === 1) {
+      root.push(node);
+    } else {
       const parentPath = parts.slice(0, -1).join("/");
-      const parent = map.get(parentPath);
+      const parent = nodeMap.get(parentPath);
       if (parent) {
         parent.children.push(node);
       } else {
-        const parentNode: TreeNode = {
-          path: file.path.replace(file.name, ""),
-          relative_path: parentPath,
-          name: parts[parts.length - 2],
-          size: 0, is_dir: true, extension: "",
-          children: [node], checked: false, indeterminate: false, depth: parts.length - 2,
-        };
-        map.set(parentPath, parentNode);
-        root.push(parentNode);
+        root.push(node);
       }
-    } else {
-      root.push(node);
     }
   }
+
+  // Step 5: Sort children — directories first, then alphabetical
+  const sortChildren = (nodes: TreeNode[]) => {
+    nodes.sort((a, b) => {
+      if (a.is_dir !== b.is_dir) return a.is_dir ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
+    for (const node of nodes) {
+      if (node.children.length > 0) sortChildren(node.children);
+    }
+  };
+  sortChildren(root);
+
   return root;
 }
 
@@ -100,7 +146,7 @@ export default function FileTreePanel({
       const hasChildren = node.children.length > 0;
       const isExpanded = expandedDirs.has(node.relative_path);
       const allLeafFiles = node.is_dir
-        ? files.filter((f) => f.relative_path.startsWith(node.relative_path) && !f.is_dir)
+        ? files.filter((f) => f.relative_path.startsWith(node.relative_path + "/") || node.relative_path === "" && f.is_dir === false)
         : [node];
       const allSelected = allLeafFiles.length > 0 && allLeafFiles.every((f) => selectedFiles.has(f.relative_path));
       const someSelected = allLeafFiles.some((f) => selectedFiles.has(f.relative_path));
@@ -179,3 +225,6 @@ function fmtSize(bytes: number): string {
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${u[i]}`;
 }
+
+
+
