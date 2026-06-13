@@ -1,9 +1,9 @@
 mod engine;
 
 use std::path::Path;
+use std::fs;
 use tauri::State;
 use std::sync::Mutex;
-
 use engine::context::{ContextBuilder, ContextRequest, ContextResult};
 use engine::filesystem::{FileEntry, ScanStats};
 use engine::filesystem::scanner::{DirectoryScanner, ScanConfig};
@@ -140,6 +140,22 @@ fn get_model_info() -> Vec<ModelInfo> {
     ModelInfo::known_models()
 }
 
+
+// ============================================================
+// File Save Command
+// ============================================================
+
+#[tauri::command]
+fn save_file(path: String, content: String) -> Result<(), String> {
+    use std::io::Write;
+    let file_path = Path::new(&path);
+    if let Some(parent) = file_path.parent() {
+        fs::create_dir_all(parent).map_err(|e| format!("Failed to create directory: {}", e))?;
+    }
+    let mut file = fs::File::create(file_path).map_err(|e| format!("Failed to create file: {}", e))?;
+    file.write_all(content.as_bytes()).map_err(|e| format!("Failed to write file: {}", e))?;
+    Ok(())
+}
 // ============================================================
 // MCP Commands
 // ============================================================
@@ -186,12 +202,15 @@ pub fn run() {
             read_file, read_file_sliced, is_binary,
             build_context, count_tokens, count_tokens_with_model,
             check_git_repo, get_git_info, get_git_diff, get_git_diff_for_files, get_modified_files,
-            get_settings, update_settings, get_model_info, 
+            get_settings, update_settings, get_model_info,
+            save_file, 
             get_mcp_tools, start_mcp_server, stop_mcp_server, is_mcp_server_running,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+
+
 
 
 

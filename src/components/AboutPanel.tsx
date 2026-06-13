@@ -14,7 +14,7 @@ export default function AboutPanel() {
         {/* Version */}
         <div className="bg-[#252525] rounded-lg px-4 py-2 inline-block">
           <span className="text-sm text-[#a0a0a0]">Version </span>
-          <span className="text-sm font-semibold text-[#4f8cff]">1.00</span>
+          <span className="text-sm font-semibold text-[#4f8cff]">1.01</span>
         </div>
 
         {/* Divider */}
@@ -55,3 +55,4 @@ export default function AboutPanel() {
     </div>
   );
 }
+

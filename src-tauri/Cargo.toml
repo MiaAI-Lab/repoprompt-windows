@@ -1,6 +1,6 @@
 [package]
 name = "reprompt-windows"
-version = "1.0.0"
+version = "1.0.1"
 description = "RepoPrompt for Windows - Context Engineering Tool for AI Coding Agents"
 authors = ["Mia's AI Lab"]
 license = "Apache-2.0"
@@ -52,3 +52,4 @@ tokio = { version = "1", features = ["full"] }
 
 # Pin time to avoid cookie crate conflict
 time = "=0.3.36"
+

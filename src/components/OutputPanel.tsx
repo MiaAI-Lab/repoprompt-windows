@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { invoke } from "@tauri-apps/api/core";
 
 interface Props {
   output: string;
@@ -34,16 +35,15 @@ export default function OutputPanel({ output, onBack }: Props) {
   const handleSave = async () => {
     try {
       const { save } = await import("@tauri-apps/plugin-dialog");
-      const path = await save({
+      const filePath = await save({
         defaultPath: "context.txt",
         filters: [
           { name: "Text", extensions: ["txt", "md", "xml"] },
-          { name: "All", extensions: ["*"] },
+          { name: "All Files", extensions: ["*"] },
         ],
       });
-      if (path) {
-        const { writeTextFile } = await import("@tauri-apps/plugin-fs");
-        await writeTextFile(path, output);
+      if (filePath) {
+        await invoke("save_file", { path: filePath, content: output });
       }
     } catch (err) {
       console.error("Failed to save:", err);
@@ -80,3 +80,5 @@ export default function OutputPanel({ output, onBack }: Props) {
     </div>
   );
 }
+
+
