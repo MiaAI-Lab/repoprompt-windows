@@ -6,6 +6,8 @@
   <br />
   Curate your code. Control your context. Build better prompts.
 
+
+  <a href="https://ko-fi.com/Z8Z3SPLOD" rel="nofollow"><img height="36" style="height: 36px; max-width: 100%;" src="https://camo.githubusercontent.com/98e68a8a848c0aff42ae688c194b8826ec9b5a8480d9bfbd2caaee987ab3aa7f/68747470733a2f2f73746f726167652e6b6f2d66692e636f6d2f63646e2f6b6f6669362e706e673f763d36" alt="Buy Me a Coffee at ko-fi.com" data-canonical-src="https://storage.ko-fi.com/cdn/kofi6.png?v=6"></a>
   <br />
 
   <a href="https://github.com/MiaAI-Lab/repoprompt-windows/releases"><img src="https://img.shields.io/github/v/release/MiaAI-Lab/repoprompt-windows?style=flat-square&label=Release" alt="Release" /></a>
@@ -239,6 +241,7 @@ Apache 2.0 — see [LICENSE](LICENSE).
   <a href="https://github.com/MiaAI-Lab"><img src="https://img.shields.io/badge/Mia's_AI_Lab-555?style=flat-square&logo=github&logoColor=white" alt="Mia's AI Lab" /></a>
   <a href="https://x.com/MiaAI_lab"><img src="https://img.shields.io/badge/@MiaAI_lab-000?style=flat-square&logo=x&logoColor=white" alt="X / Twitter" /></a>
 </div>
+
 
 
 
