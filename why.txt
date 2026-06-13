@@ -1,0 +1,499 @@
+I often get asked why should I care
+about repoprompt in my workflow? What
+what does it solve for me that I can't
+just do with prompting cloud code
+directly? Um and I think to get to the
+essence of that, I'll do a little demo
+here and explain to you a little bit
+about what my thinking is through
+reprompt what it's doing for you. um and
+why I think you know some of this
+organization this prompt management you
+know is important still even if you're
+not using Chad GPT or you're not using
+AI studio you're just using your agent
+directly which totally fair you know I
+use cloud code a lot I love it um I use
+codeex a lot too it's a great tool um so
+before I kind of jive into that I want
+to explain a little bit about what repo
+prompt is doing how it assembles prompts
+and why I think those things matter um
+so let Let me move this here and this
+over here. Great. So I built a little
+visual demo uh that kind of breaks down
+the anatomy of a prompt in repop. Um and
+at the start you'll find the file tree.
+So at the heart of any task when you're
+working with an AI model um especially
+in rel to coding um is that you need uh
+you have a project and you need the
+model to understand a little bit about
+that project structure. So the file tree
+is a really token efficient mechanism uh
+where you know we map through your repo
+and compress that down to just a list of
+files you know nested through uh we
+don't repeat path elements because we
+can use ASKI um we can encode some
+information like you know these are
+selected files these ones have code maps
+um great um
+what this will do is it will allow the
+model to understand a lot about your
+project you know what files exist oh am
+I using node versus bun am I using uh oh
+I'm using TypeScript. Oh, I have my my
+CSS definitions here. Um those are all
+important elements that if you don't
+provide them to the model or if you have
+a config file that's nested deep, uh it
+won't know to look for it and if you
+don't prompt it to find that file, it
+won't know that it's there and it might
+not solve your problem in a way that
+considers that file. So by giving the
+file tree you're able to have the model
+able to understand about your code like
+reason about your codebase and
+understand you know what elements it
+needs to think about. Um now another
+thing that is interesting and you'll be
+like okay well you know I can just use
+the ls command you know cloud can use it
+just fine. Yeah sure ls is a surface
+level representation of a folder. It'll
+give you you know your project root your
+source and you've got you've got just a
+source and package. Okay you can go
+recursive and find everything in there
+but you know that's going to eat up a
+ton of token usage. Um, and in in a
+monor repo, it's just untenable. There's
+just way too much stuff in there uh that
+the model just won't be able to um make
+sense of. So, it'll have to kind of
+drill down and slowly find its way
+around, do some searches, grap around,
+and then sort of find its way and kind
+of organize itself. The file tree skips
+all of that. You get the full repo kind
+of down. Um, and it's autobudgeted to a
+certain amount of tokens. Uh, so you
+know, if you exceed that budget, which
+is around 10,000 tokens, um, it will
+drop down in resolution. So you can like
+limit depth uh and then it can go ahead
+and limit to just folder structure um
+and and you're getting a a much you know
+more compact representation of your repo
+without having to think about how many
+tokens is that representation taking up.
+So that's a file tree. Um next you know
+we've got code maps but I'll skip to
+file contents. Um, so if you've worked
+with Claude before, um, and you have a
+large file, you'll notice that, you
+know, Claude will skip through different
+parts of your file, it'll, you know,
+search around, read little bit, little
+chunks of your file. Sometimes it'll
+read the full thing. But in a really
+large one, that's too many tokens. So,
+you know, it won't read it. And, you
+know, as Claude is kind of reading and
+rereading files, you know, it's it's
+kind of getting building redundant
+information and filling up its context
+window with kind of slices of your
+files, but never like the full picture.
+And why this matters is say that like
+you have a key function in your code
+that isn't being used but like solves a
+key part of the problem. If cla is just
+reading around there and never actually
+hits that function, it won't know it
+exists and it won't be able to use it
+and it might recreate it and you end up
+with a duplicate function and that
+happens all the time. Um so by having
+you know your full file contents kind of
+packed in your prompt there that is
+avoided but the problem is knowing which
+files to include and you don't want to
+include too many. Um, and so there's
+another thing that I've I've sort of
+worked through and that's called code
+maps. And code maps um use an a
+representation. It extracts information
+from your from your files. And what it's
+able to do is uh basically give the
+model the ability to understand at a
+high level how to use a function, how to
+use a class um without having to read
+the whole thing. So you know this o
+service has a login method, it has a
+logout method. Um the login requires an
+email and password. Um, if it just saw
+login, it might not have known that
+email and password are required. Um, it
+might not know that this is an async
+method with a promise. Um, it might not
+know there's a refresh token. So,
+instead of having claude kind of
+hallucinate how to use the O service,
+um, we can include a code map for it and
+it will just know how it is that it
+needs to work with it. And the way that
+we kind of get these included in a
+prompt is, you know, you might have the
+off service referenced in your file
+contents and as a result, it will just
+get pulled in automatically. Now, this
+isn't a perfect system, but um I've
+built some good tooling in repomprompt
+to autodetect if you have a selected
+file. What are the required code maps
+that we need for the model to have a
+full picture of how to use that file?
+Um, and so that's what we've done here.
+So, you've got the file tree, the code
+maps, the file contents. If you're doing
+a review, maybe you want a diff in
+there. You want to understand how things
+have changed since a certain branch. You
+know, where where have we where are we
+going? Um, I need to make these edits
+here. This stopped working. Um, the diff
+is a great tool that we can just include
+in the prompt and it'll give context to
+the model, what changed and how to work
+with it. And what's great is we can
+filter just for the files that we have
+selected and ignore the rest of the
+diff. So if I was working on another
+feature, um, we did a bunch of stuff, I
+don't care about the diff for that. I
+can just filter down automatically,
+bring in just the diff of the files that
+I need to. Um, and then finally, we've
+got metaprompts. And metaprompts are a
+really key piece of um content in a
+prompt where basically you're going to
+need to specify to the model how you
+want it to respond, how you want it to
+answer. Um what kind of work do I need
+it to do? Okay, I need unit tests. You
+know, I want certain amount of code
+coverage. Um use this testing library.
+So, you know, we often have rules files,
+but you don't want basically too many
+rules to kind of always be cluttering
+your context window. So, we can kind of
+just use the ones that we need, include
+them in a specific prompt, select them
+as we need. Great, we've got that sorted
+out. Um, and metaprompts are useful as
+well for just having different
+workflows, which I'll get into in a
+little bit. And then finally, of course,
+there's your task. Um, and that's just
+what we've got and it's at the bottom.
+So, if you look through the whole
+prompt, we've got, you know, the file
+tree, the code maps, the file contents,
+the diffs if we need, we don't need to
+always include these, um, the meta
+prompts and the instructions. And all of
+this together forms a concise,
+wellorganized prompt that not only just
+has the task, but it has information
+about the task, the context in your
+repo. And it allows me to be a little
+bit less specific in what I'm writing.
+Um, you know, the authentication logic,
+like that's just a vague task. But I've
+included code maps for the off service.
+I've included file contents where that
+is used. Um, the model can get right to
+work. It doesn't need to know everything
+about the repo. Doesn't need to search
+around. it knows because I've given it
+the information it needs. So that's
+super helpful uh information for the
+model. You know, we can give it to it
+really easily. And reple prompt is
+really built around assembling prompts
+like this. Um and from from testing I've
+done, if you have a prompt like this,
+you will almost always get better
+results than if you just let the model
+find its way through, fiddle its way
+through and kind of solve things on its
+own. Like this is the job of an engineer
+over the next few years is organizing
+context. But what's great with repo
+prompt is that I don't have to do all
+this organization myself. Um, so I've
+got this new presets uh set up here. Um,
+and I didn't do any of the work of
+figuring out what files are related, but
+I've got this discover prompt. Now, I've
+got several presets here. We have
+standard plan, diff follow-up, all these
+workflows. Um, discover is a workflow
+that I've added recently where that job
+of figuring out what a task entails can
+be done pretty easily. So, I'm just
+going to select it. Um, it's got the MCP
+discover prompt. The meta prompt is set
+to the discover feature. Reaper prompt
+is connected over the MCP server to
+claude code. I had just copied it. I'm
+going to paste that in here. CommandV.
+Um, now it includes the the prompt, the
+behavior prompt, how to use the tools to
+solve this workflow. Um, and it can just
+get to work. So, what does it do at the
+start? It's reading the file tree. I
+haven't included that in this prompt. Um
+because I it's connected to the tools,
+it can read it for it. Um it's reading
+code structure, so it's finding code
+maps. Um so it's able to very
+efficiently kind of find its way through
+all of the um the files that are
+related. So let's just watch it work a
+little bit. It's using the search tools.
+Um it's examining the key files. Okay,
+we've got nine files selected. So it
+selected the files that are relevant to
+the task. That was pretty quick. Um so
+it just surfaced all of these files. We
+can see them already selected. Um,
+cool. It's reading some more files. As
+you can see, it was able to speed
+through those really quick. Repo prompts
+tools are quite rapid. Um, it's just
+getting a little bit more information
+there. And at the end, what should
+happen with the discover prompt, um, if
+all goes well, um, and sometimes cloud
+goes off the rails, is that it will
+update my prompt and make it a lot
+clearer for, uh, the next model that's
+going to be implementing the work. Um,
+no. So it didn't I didn't want it to
+implement the work. Um your task is to
+find context and write the discovery
+prompt. Please finish the discovery
+workflow and halt. So cloud sonnet is
+what I'm using right now. It's not the
+smartest model, especially lately. It's
+been not the smartest. Um so it's set
+set the selected files. Okay. Um
+and crafting the handoff prompts, which
+it knows because I've included it. Okay,
+great. So we'll just pause it here.
+Okay. What did we get out of this? Um so
+I've got the files that are related to
+this task. It isolated everything that
+we needed to touch. Uh it basically
+clarified the task, wrote about relevant
+context. Um specified the key
+implementation points um and information
+about the architecture. Okay. So all of
+a sudden I've got a a task that is much
+clearer to an AI model reading it. It
+knows about all of these files. It has a
+directory structure included for these
+files here. Didn't have to search for
+them. Um, and now what I can do is
+switch over to MCP agent mode. I can hit
+clear. Um, so I've just cleared out the
+context and I can just include this in
+here. Um, now I've included in this
+prompt the code maps, only the code maps
+for these files. And let's look a little
+bit at this. So the MCP agent prompt and
+this is what all the MCP prompts do is
+that because
+agents can read their own context, they
+can read files themselves. I don't want
+to necessarily include them all. Um I've
+done the discovery work. Uh so it's just
+going to include code maps for all of
+the files. So I can keep token use low.
+Um and then it will uh include the
+behavior prompt, some of the file trees
+for the files that are selected. Um, and
+the model is able to just basically read
+what it needs, get straight to work,
+going straight to applying the edits
+that are required. Um, and just solving
+the problem. Um, now we can watch Claude
+kind of work its way through this
+problem in full. Um, you know, now you
+made a little mistake. It'll correct
+itself. Um, fixing fixing that happens.
+Um, COD's not perfect. Um, but you know,
+now it's able to basically go through
+all of the work that it needs to get
+done. um and then much faster than it
+would otherwise. It's able to solve the
+problem um with with minimal, you know,
+intervention uh in between. Now, what is
+great with the discover workflow is that
+I have the task kind of clearly laid out
+for me. I can review it and I can look
+at it in repo prompts before I hand it
+off again to another model. Uh and
+that's a really important piece. So I'm
+trying to find key points where you can
+stay involved, stay active and engaged
+uh in your work uh without just kind of
+delegating everything to the model and
+and having key points where you can kind
+of decide what to do next, update
+things, clarify things and move on to
+the next. Um there is another way to
+work though. Um so the rest of the work
+here um um can you switch to using the
+chat for the rest of the implementation?
+So, what's cool here with repo prompt is
+that it does include a fully featured
+chat system. Um, and what is, I think,
+really cool about the chat system in
+repomprompt is that it efficiently
+organizes context in the way that we
+just went over. So, every prompt message
+in Reprompt will take all of this
+context um and organize it and feed it
+to the model and groom out old context.
+So, you can have really long chats in
+Reprompt. You can switch modes like
+plan, edit, uh, review, whatever you
+need. Um, and it will have all of the
+information it needs. The file contents
+are provided in full. Like we've talked
+about how valuable that can be. Um, and
+it will just get to work on that and you
+won't have lingering old versions of
+files in the chat that can distract the
+model. Uh, it's just got the latest
+information. So I'll put this back down.
+So what is happening here? So now I've
+got GP5 kind of working through the
+problem. It's thinking through uh the
+task and I can read what Claude did so
+far. Um so it's set to proedit. Um it's
+basically saying I did all of these
+things currently working on this. Um and
+it's able to complete the final step. So
+GC5 high reasoning is probably overkill
+for this task. Uh it's just the final
+bit. But I just wanted to show a little
+bit about how um the rub prompt tools
+can kind of work together and create
+emergent workflows. Um, and what I
+really like about these presets is that
+all of these can be customized and
+edited and you can build your own
+workflows with the tool set available to
+you here. I've created what I think are
+the most useful ones. These are the ones
+that I use. Um, but you know, people
+have different things like some people
+want I just want the chat to do a plan,
+have the full files for that and let my
+agent do the work. That's great, too.
+Um, you know, you can have it set the
+task. I can go to plan mode and then I
+can copy this prompt and go into chat
+and have chat come up with a plan. you
+know, it's totally valid, too. So, on
+this side, you've got exports. On this
+side, you've got chats. I can send
+things over to the chat. Um, uses all
+the context I have configured here, and
+we can get to work. Um, so this might
+take a while. Um, you know, Fifi thinks
+for a long time, but the nice thing with
+it is that it can just kind of get
+through all of the edits in the chat
+itself in one response. So, it's able to
+reason for the full amount just on the
+problem, write a concise answer, and it
+could do, you know, multi file edits in
+one shot. So that's a little tour of
+repoprompt of all the pieces that I
+think are important and I hope that like
+this was helpful uh in helping you
+understand a little bit about what is
+going on here. Now I one last thing here
+um I've gotten some requests to
+understand you know what are the what is
+going on on this side. So, just so you
+know, uh I can use the search box here
+if I'm finding files. Uh I can select
+them. Um I don't have any CSS in there.
+Uh JS I can find oh TypeScript project.
+Great. All the TS files I can I can
+find, you know, the files related to
+what I'm searching for. Um obviously,
+you know, you can there's a search tool
+with MCP Claude can do a better job of
+searching. Um I can add different
+folders to this repo, too. So I have a
+workspace. I can add multiple folders if
+I have a relevant library. Um, I can add
+that here as well. Um, yeah, I can clear
+out the selection if I need to. Um, and
+then, you know, there's some sorting and
+filters. So, I support ignore files. You
+know, if you got a good ignore that's
+respected, so your build data and stuff
+is going to get removed. So, that's a
+little bit about what these buttons are
+for. And I could leave the workspace if
+I need to. Presets are useful for having
+sets of files. So, I can create a preset
+here, um, shipping method and call that
+shipping method. And if I clear the
+selection here, I can just click that
+and then all these files are reselected.
+So that's a really useful setup. So if
+you're working on certain features, you
+have these files related, you can create
+presets and kind of set that up. So
+hopefully that was clear. Uh hopefully
+you get a better sense of what I'm
+thinking about when I'm building repo
+prompt and hopefully um you know you can
+join me on this journey and you know
+provide some feedback and um you know
+together we can improve it. Now one last
+thing again when I'm as I as I kind of
+mention this um is that uh basically um
+basically one thing that is a little bit
+unfortunate with um having repop kind of
+work with an agent like this is that you
+know you've got you've got your you on
+one side you've got you know the chat
+window it's doing some work there it's
+not an agent and you got agent on the
+side I'm going to bring these together
+and I'm hope you come with me on this
+journey because you know everything is
+kind of integrated. We have everything
+kind of merged into one. Um you're able
+to kind of talk to the app in natural
+language, do all of this work without
+thinking about all the buttons. The the
+AI model is there for you to understand
+those things for you. So um hope that
+helps. Hope um this was a little bit of
+a better demo than some of the previous
+ones I've done. And uh please let me
+know if you have any questions. All
+right. Thank you.

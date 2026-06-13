@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why RepoPrompt?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(79, 140, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(120, 80, 255, 0.03) 0%, transparent 50%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.05); opacity: 1; }
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 720px; }
+
+  .badge {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    background: rgba(79, 140, 255, 0.1);
+    border: 1px solid rgba(79, 140, 255, 0.2);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: #4f8cff;
+    margin-bottom: 2rem;
+    letter-spacing: 0.02em;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #e0e0e0 0%, #4f8cff 50%, #7850ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+    color: #888;
+    max-width: 560px;
+    margin: 0 auto 2rem;
+    line-height: 1.8;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #444;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .section {
+    margin-bottom: 5rem;
+  }
+
+  .section:last-child { margin-bottom: 0; }
+
+  .section-number {
+    font-size: 0.7rem;
+    color: #4f8cff;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #fff;
+  }
+
+  .section p {
+    font-size: 1rem;
+    color: #999;
+    margin-bottom: 1rem;
+  }
+
+  .section p:last-child { margin-bottom: 0; }
+
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(79, 140, 255, 0.05) 0%, rgba(120, 80, 255, 0.05) 100%);
+    border: 1px solid rgba(79, 140, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+
+  .highlight-box p {
+    color: #ccc;
+    margin-bottom: 0.5rem;
+  }
+
+  .highlight-box p:last-child { margin-bottom: 0; }
+
+  .quote {
+    border-left: 3px solid #4f8cff;
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: #bbb;
+    font-size: 1.05rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: rgba(79, 140, 255, 0.2); }
+
+  .card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .card p {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0;
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 2rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  @media (max-width: 640px) {
+    .comparison { grid-template-columns: 1fr; }
+  }
+
+  .comparison-col {
+    padding: 1.5rem;
+  }
+
+  .comparison-col:first-child {
+    background: rgba(239, 68, 68, 0.03);
+  }
+
+  .comparison-col:last-child {
+    background: rgba(34, 197, 94, 0.03);
+  }
+
+  .comparison-col h4 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .comparison-col:first-child h4 { color: #ef4444; }
+  .comparison-col:last-child h4 { color: #22c55e; }
+
+  .comparison-col ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .comparison-col li {
+    font-size: 0.85rem;
+    color: #999;
+    padding: 0.4rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .comparison-col li::before {
+    content: '✕';
+    position: absolute;
+    left: 0;
+    color: #ef4444;
+    font-size: 0.7rem;
+  }
+
+  .comparison-col:last-child li::before {
+    content: '✓';
+    color: #22c55e;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #444;
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    margin-top: 3rem;
+  }
+
+  .footer a {
+    color: #4f8cff;
+    text-decoration: none;
+  }
+
+  strong { color: #ddd; }
+  em { color: #4f8cff; font-style: normal; }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="badge">Why This Exists</div>
+    <h1>You don't need this tool. Until you do.</h1>
+    <p>
+      Letting an agent explore freely works great — until it doesn't.
+      Curated context is the difference between "close enough" and "exactly right."
+    </p>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<div class="container">
+
+  <!-- Section 1 -->
+  <div class="section">
+    <div class="section-number">01</div>
+    <h2>The "Just Use Claude Code" Argument</h2>
+    <p>
+      It's totally fair. You open your terminal, type <code style="color:#4f8cff;font-size:0.9em;">claude</code> or <code style="color:#4f8cff;font-size:0.9em;">codex</code>,
+      and you're off to the races. The agent can read files, search your codebase,
+      understand your project. So why would you spend time curating context by hand?
+    </p>
+    <p>
+      The answer is: <strong>you don't need this for quick edits or single-file changes.</strong>
+      That's not what this is for.
+    </p>
+    <p>
+      But here's the thing about letting an agent explore on its own — it <em>fumbles</em>.
+    </p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section">
+    <div class="section-number">02</div>
+    <h2>The Fumbling Problem</h2>
+    <p>
+      When an agent doesn't know your codebase, it does what any human would do:
+      it starts poking around. <code style="color:#888;">ls</code> here, <code style="color:#888;">grep</code> there,
+      read a few files, skip a few others. Every one of those operations burns tokens.
+    </p>
+    <p>
+      More importantly, <strong>the agent doesn't know what it doesn't know.</strong>
+      There's a critical function in a file three directories deep that it never thought to look at.
+      So it rewrites it. Now you have two implementations of the same thing.
+      That happens <em>all the time.</em>
+    </p>
+
+    <div class="quote">
+      "If Claude is just reading around and never actually hits that function,
+      it won't know it exists and it might recreate it — and you end up with a duplicate function."
+    </div>
+
+    <p>
+      With curated context, <strong>you</strong> decide what the agent sees.
+      That function in the third directory? You hand-picked it. The agent starts with everything it needs.
+      No fumbling. No duplicates. No tokens wasted on exploration.
+    </p>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section">
+    <div class="section-number">03</div>
+    <h2>The Anatomy of a Good Prompt</h2>
+    <p>
+      A well-structured prompt isn't just "write code that does X." It's a complete
+      information package. Here's what goes into one:
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>📁 File Tree</h3>
+        <p>A token-efficient map of your entire project. The agent understands at a glance what framework you're using, where configs live, and what's relevant — without needing to <code style="color:#666;">ls -R</code> everything.</p>
+      </div>
+      <div class="card">
+        <h3>📄 File Contents</h3>
+        <p>The full content of every file you selected. No gaps, no blind spots. If the function exists, the agent sees it. No more "I didn't know that file was there."</p>
+      </div>
+      <div class="card">
+        <h3>🔍 Code Maps</h3>
+        <p>Extracted signatures of functions and classes. The agent learns how that auth service works without reading all 500 lines. It just needs the method signatures and types.</p>
+      </div>
+      <div class="card">
+        <h3>📋 Git Diff</h3>
+        <p>What changed, filtered to just the files you're working on. Perfect for code review or understanding recent changes without dumping the entire diff.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <p>
+        All of this together means you can write a vague task like
+        <em>"fix the authentication logic"</em> and the model knows exactly what you mean —
+        because you've already given it the OAuth service code map, the routes file,
+        and the database schema.
+      </p>
+    </div>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section">
+    <div class="section-number">04</div>
+    <h2>Letting an Agent In vs. Curating Context</h2>
+    <p>Here's what you gain by spending 30 seconds curating files instead of letting the agent roam free:</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <h4>Agent Roams Free</h4>
+        <ul>
+          <li>Burns tokens on <code style="color:#777;">ls</code> and <code style="color:#777;">grep</code></li>
+          <li>May never find the key file</li>
+          <li>Recreates existing functions</li>
+          <li>Context fills up with irrelevant exploration</li>
+          <li>Can't reason across repo boundaries</li>
+          <li>No visibility into what it's "thinking" about</li>
+        </ul>
+      </div>
+      <div class="comparison-col">
+        <h4>You Curate the Context</h4>
+        <ul>
+          <li>Zero token waste on exploration</li>
+          <li>Every relevant file is upfront</li>
+          <li>No duplicate implementations</li>
+          <li>The agent starts working immediately</li>
+          <li>Multi-repo context in one shot</li>
+          <li>You reviewed exactly what was sent</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="section">
+    <div class="section-number">05</div>
+    <h2>The Handoff Pattern</h2>
+    <p>
+      Here's where it gets interesting. You can use a <em>discovery</em> workflow:
+      one agent explores your codebase, finds the relevant files, and writes a
+      clear handoff prompt. Then a <em>second</em> agent — maybe a cheaper model —
+      implements the work using that prompt.
+    </p>
+
+    <div class="quote">
+      "All of a sudden I've got a task that is much clearer to an AI model reading it.
+      It knows about all of these files. It has a directory structure included.
+      It didn't have to search for them."
+    </div>
+
+    <p>
+      This pattern is powerful because it creates a <strong>review checkpoint</strong>.
+      The discovery agent hands you a plan. You read it. You tweak it. You approve it.
+      <em>Then</em> the implementation agent starts working. You stay in control without
+      doing the grunt work.
+    </p>
+  </div>
+
+  <!-- Section 6 -->
+  <div class="section">
+    <div class="section-number">06</div>
+    <h2>What This Means For You</h2>
+    <p>
+      The honest truth is that the engineer's job is shifting. It's becoming less about
+      writing every line from scratch and more about <strong>organizing context</strong> —
+      deciding what the AI should see, in what order, and with what instructions.
+    </p>
+    <p>
+      Tools like Codex CLI and Claude Code are amazing for quick, self-contained tasks.
+      But when you're doing complex multi-file work, when you're reviewing a PR,
+      when you're onboarding someone to a monorepo, or when you're trying to squeeze
+      the best result out of a limited context window — that's when curated context earns its keep.
+    </p>
+    <p>
+      <strong>You don't need this tool for everything.</strong>
+      But when you need it, you'll be glad it's there.
+    </p>
+  </div>
+
+  <div class="footer">
+    <p>Heavily inspired by <a href="https://github.com/repoprompt/repoprompt-ce">RepoPrompt CE</a> · The future is curated context</p>
+  </div>
+
+</div>
+
+</body>
+</html>
