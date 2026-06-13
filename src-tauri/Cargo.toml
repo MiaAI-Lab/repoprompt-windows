@@ -1,10 +1,10 @@
 [package]
-name = "reprompt-windows"
+name = "repoprompt-windows"
 version = "1.0.2"
 description = "RepoPrompt for Windows - Context Engineering Tool for AI Coding Agents"
 authors = ["Mia's AI Lab"]
 license = "Apache-2.0"
-repository = "https://github.com/MiaAI-Lab/reprompt-windows"
+repository = "https://github.com/MiaAI-Lab/repoprompt-windows"
 edition = "2021"
 rust-version = "1.77.2"
 
@@ -52,5 +52,6 @@ tokio = { version = "1", features = ["full"] }
 
 # Pin time to avoid cookie crate conflict
 time = "=0.3.36"
+
 
 

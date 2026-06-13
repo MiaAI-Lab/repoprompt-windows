@@ -1,5 +1,5 @@
 {
-  "name": "reprompt-windows",
+  "name": "repoprompt-windows",
   "private": true,
   "version": "1.0.2",
   "description": "RepoPrompt for Windows - Context Engineering Tool for AI Coding Agents",
@@ -36,5 +36,6 @@
     "vite": "^8.0.12"
   }
 }
+
 
 

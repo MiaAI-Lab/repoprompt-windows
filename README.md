@@ -8,23 +8,23 @@
 
   <br />
 
-  <a href="https://github.com/MiaAI-Lab/reprompt-windows/releases"><img src="https://img.shields.io/github/v/release/MiaAI-Lab/reprompt-windows?style=flat-square&label=Release" alt="Release" /></a>
-  <a href="https://github.com/MiaAI-Lab/reprompt-windows/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MiaAI-Lab/reprompt-windows?style=flat-square&label=License" alt="License" /></a>
+  <a href="https://github.com/MiaAI-Lab/repoprompt-windows/releases"><img src="https://img.shields.io/github/v/release/MiaAI-Lab/repoprompt-windows?style=flat-square&label=Release" alt="Release" /></a>
+  <a href="https://github.com/MiaAI-Lab/repoprompt-windows/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MiaAI-Lab/repoprompt-windows?style=flat-square&label=License" alt="License" /></a>
   <img src="https://img.shields.io/badge/Windows-10%2B%20%7C%2011-0078D6?style=flat-square&logo=windows&logoColor=white" alt="Windows" />
   <img src="https://img.shields.io/badge/Installer-~8%20MB-2ea44f?style=flat-square" alt="Size" />
   <img src="https://img.shields.io/badge/Built%20With-Tauri%202%20%7C%20Rust%20%7C%20React-ff69b4?style=flat-square" alt="Built With" />
 
   <br /><br />
 
-  ![RepoPrompt Screenshot](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.0/screenshot.png)
-  ![RepoPrompt Screenshot 2](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.0/screenshot2.png)
+  ![RepoPrompt Screenshot](https://github.com/MiaAI-Lab/repoprompt-windows/releases/download/v1.0.0/screenshot.png)
+  ![RepoPrompt Screenshot 2](https://github.com/MiaAI-Lab/repoprompt-windows/releases/download/v1.0.0/screenshot2.png)
 
   <br />
 
   <a href="#installation">📥 Download</a> ·
   <a href="#features">✨ Features</a> ·
   <a href="#workflow">💡 Workflow</a> ·
-  <a href="https://github.com/MiaAI-Lab/reprompt-windows/issues">🐛 Report Bug</a>
+  <a href="https://github.com/MiaAI-Lab/repoprompt-windows/issues">🐛 Report Bug</a>
 
 </div>
 
@@ -102,10 +102,10 @@ Think of it as a **curated context window builder** for your codebase.
 
 ## Installation
 
-Download the latest installer from the [Releases page](https://github.com/MiaAI-Lab/reprompt-windows/releases):
+Download the latest installer from the [Releases page](https://github.com/MiaAI-Lab/repoprompt-windows/releases):
 
-[![Download MSI](https://img.shields.io/badge/Download-MSI-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.2/RepoPrompt_1.0.2_x64_en-US.msi)
-[![Download Setup EXE](https://img.shields.io/badge/Download-Setup_EXE-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/reprompt-windows/releases/download/v1.0.2/RepoPrompt_1.0.2_x64-setup.exe)
+[![Download MSI](https://img.shields.io/badge/Download-MSI-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/repoprompt-windows/releases/download/v1.0.2/RepoPrompt_1.0.2_x64_en-US.msi)
+[![Download Setup EXE](https://img.shields.io/badge/Download-Setup_EXE-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/MiaAI-Lab/repoprompt-windows/releases/download/v1.0.2/RepoPrompt_1.0.2_x64-setup.exe)
 
 - **MSI** — Windows Installer package. Supports silent/unattended installation via msiexec.
 - **Setup EXE** — NSIS-based installer with a graphical setup wizard.
@@ -131,8 +131,8 @@ Download the latest installer from the [Releases page](https://github.com/MiaAI-
 
 ```powershell
 # Clone the repository
-git clone https://github.com/MiaAI-Lab/reprompt-windows.git
-cd reprompt-windows
+git clone https://github.com/MiaAI-Lab/repoprompt-windows.git
+cd repoprompt-windows
 
 # Install frontend dependencies
 npm install
@@ -162,7 +162,7 @@ cd src-tauri && cargo test
 ## Project Layout
 
 ```
-reprompt-windows/
+repoprompt-windows/
 ├── src/                          React + TypeScript frontend
 │   ├── App.tsx                    Main layout (5-tab navigation)
 │   ├── main.tsx                   Entry point
@@ -222,7 +222,7 @@ Huge thanks to the original author for the inspiration and the excellent design 
 
 ## 🤝 Contributing
 
-Found a bug? Have an idea? Open an [issue](https://github.com/MiaAI-Lab/reprompt-windows/issues) or send a PR.
+Found a bug? Have an idea? Open an [issue](https://github.com/MiaAI-Lab/repoprompt-windows/issues) or send a PR.
 
 ---
 
@@ -239,6 +239,7 @@ Apache 2.0 — see [LICENSE](LICENSE).
   <a href="https://github.com/MiaAI-Lab"><img src="https://img.shields.io/badge/Mia's_AI_Lab-555?style=flat-square&logo=github&logoColor=white" alt="Mia's AI Lab" /></a>
   <a href="https://x.com/MiaAI_lab"><img src="https://img.shields.io/badge/@MiaAI_lab-000?style=flat-square&logo=x&logoColor=white" alt="X / Twitter" /></a>
 </div>
+
 
 
 
