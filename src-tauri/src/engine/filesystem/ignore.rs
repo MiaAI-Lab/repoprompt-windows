@@ -125,6 +125,10 @@ fn glob_to_regex(pattern: &str) -> String {
         // For basename-only patterns, we need to escape AFTER building the full string
         re.push_str(&escape_glob_chars(s));
     } else {
+        // A slash makes this a path, not a basename. Match it in any directory.
+        // Anchoring at the start left src/node_modules and an absolute path
+        // from the scanner unmatched, so those files were included.
+        re.push_str("(?:.*/)?");
         re.push_str(&escape_glob_chars(s));
     }
     if re.ends_with('/') { re.push_str(".*"); }
@@ -173,6 +177,15 @@ mod tests {
         rules.set_gitignore("*.tmp\nbuild/", Path::new("/test"));
         let has_gitignore = rules.gitignore.is_some();
         assert!(has_gitignore, "gitignore should be set");
+    }
+
+    #[test]
+    fn test_directory_pattern_matches_nested_and_absolute_paths() {
+        let rules = IgnoreRules::with_defaults();
+        assert!(rules.is_ignored(Path::new("src/node_modules/package.json"), false));
+        assert!(rules.is_ignored(Path::new("/proj/node_modules/index.js"), false));
+        assert!(!rules.is_ignored(Path::new("src/node_modules_backup/index.js"), false));
+        assert!(!rules.is_ignored(Path::new("src/main.rs"), false));
     }
 }
 
